@@ -2,6 +2,9 @@ package com.demo.file.demofileservices.controller;
 
 import com.demo.file.demofileservices.model.Employee;
 import com.demo.file.demofileservices.services.FileService;
+import com.demo.file.demofileservices.services.ZipFileService;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,23 +14,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static com.demo.file.demofileservices.util.Constant.ATTACHMENT;
+import static com.demo.file.demofileservices.util.Constant.ZIP_FILE_NAME;
 
 @Controller
 @RequestMapping("demo")
 public class FileController {
 
     private FileService fileService;
+    private ZipFileService zipFileService;
 
-    public FileController(FileService fileService) {
+    public FileController(FileService fileService, ZipFileService zipFileService) {
         this.fileService = fileService;
+        this.zipFileService=zipFileService;
     }
 
     private List<String> contentTypes = Arrays.asList("application/vnd.ms-exce", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -79,6 +89,14 @@ public class FileController {
     @GetMapping(value = "errorResponse", produces = MediaType.TEXT_PLAIN_VALUE)
     public String errorResponse() {
         return "ErrorResponse";
+    }
+
+    @GetMapping("getZipFile")
+    public ResponseEntity<ByteArrayResource> getZipFile() throws IOException {
+           return ResponseEntity.status(HttpStatus.OK)
+                   .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                   .header(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT+ZIP_FILE_NAME)
+                   .body(new ByteArrayResource(zipFileService.getZipFile()));
     }
 
 

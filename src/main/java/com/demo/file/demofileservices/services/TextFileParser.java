@@ -10,7 +10,7 @@ import static com.demo.file.demofileservices.util.Constant.*;
 import static org.apache.logging.log4j.util.Strings.trimToNull;
 
 @Service
-public class ParseTextService {
+public class TextFileParser {
 
     public List<Employee> getEmployeeRecord(List<String> flatMessages) {
         List<Employee> employeeRecords = new ArrayList<>();

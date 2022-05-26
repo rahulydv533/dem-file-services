@@ -8,5 +8,8 @@ public class Constant {
     public static final int EMPLOYEE_COMPANY_LENGTH = 10;
     public static final int EMPLOYEE_CONTACT_NUMBER_LENGTH = 10;
 
+    public static final String ATTACHMENT = "attachment; fileName=";
+    public static final String ZIP_FILE_NAME = "TestZip.zip";
+
 
 }

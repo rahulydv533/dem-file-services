@@ -2,7 +2,6 @@ package com.demo.file.demofileservices.services;
 
 import com.demo.file.demofileservices.model.Employee;
 import com.demo.file.demofileservices.util.FileAdapterEnum;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static io.micrometer.core.instrument.util.StringUtils.isEmpty;
 
@@ -22,10 +20,10 @@ public class FileServiceImp implements FileService {
 
     Logger log = LoggerFactory.getLogger(FileServiceImp.class);
 
-    private ParseTextService parseTextService;
+    private TextFileParser parseTextService;
     private ExcelFileParser excelFileParser;
 
-    public FileServiceImp(ParseTextService parseTextService, ExcelFileParser excelFileParser) {
+    public FileServiceImp(TextFileParser parseTextService, ExcelFileParser excelFileParser) {
         this.parseTextService = parseTextService;
         this.excelFileParser = excelFileParser;
     }
