@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Txt File Response</title>
+</head>
+<body>
+<table>
+    <thead>
+    <th>Name</th>
+    <th>Address</th>
+    <th>Company</th>
+    <th>ContactNumber</th>
+    </th>
+    </thead>
+    <tbody>
+    <tr th:each="employee : ${employeeList}">
+        <td><span th:text="${employee.name}"> Name </span></td>
+        <td><span th:text="${employee.address}"> Address </span></td>
+        <td><span th:text="${employee.company}"> Company </span></td>
+        <td><span th:text="${employee.contactNumber}"> ContactNumber </span></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
