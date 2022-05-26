@@ -1,6 +1,8 @@
 package com.demo.file.demofileservices.services;
 
 import com.demo.file.demofileservices.model.Employee;
+import com.demo.file.demofileservices.util.FileAdapterEnum;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -8,9 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static io.micrometer.core.instrument.util.StringUtils.isEmpty;
@@ -21,12 +23,14 @@ public class FileServiceImp implements FileService {
     Logger log = LoggerFactory.getLogger(FileServiceImp.class);
 
     private ParseTextService parseTextService;
+    private ExcelFileParser excelFileParser;
 
-    public FileServiceImp(ParseTextService parseTextService) {
+    public FileServiceImp(ParseTextService parseTextService, ExcelFileParser excelFileParser) {
         this.parseTextService = parseTextService;
+        this.excelFileParser = excelFileParser;
     }
 
-    public List<Employee> uploadFile(MultipartFile multipartFile) throws IOException {
+    public List<Employee> uploadTextFile(MultipartFile multipartFile) throws IOException {
         try {
 
             List<String> listOfDataByBufferReader = new ArrayList<>();
@@ -55,6 +59,22 @@ public class FileServiceImp implements FileService {
             log.info("Exception occurred while extracting data from {} due to \n {}", multipartFile.getOriginalFilename(), ex.getStackTrace());
             throw ex;
         }
+    }
+
+    public List<Employee> uploadExcelFile(MultipartFile multipartFile) {
+        Map<Integer, List<String>> excelData = new HashMap<>();
+        try {
+            List<String> listOfDataByBufferReader = new ArrayList<>();
+            Path tmpLocation = Files.createTempDirectory("");
+            log.info("tempLocation: " + tmpLocation);
+            File tmpFile = tmpLocation.resolve(Objects.requireNonNull(multipartFile.getOriginalFilename())).toFile();
+            multipartFile.transferTo(tmpFile);
+            excelData = excelFileParser.parseExcel(tmpFile);
+
+        } catch (IOException ex) {
+           log.info(ex.getMessage());
+        }
+        return FileAdapterEnum.EMPLOYEE_DETAILS.apply(excelData);
     }
 
 

@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface FileService {
 
-    public List<Employee> uploadFile(MultipartFile file) throws IOException;
+    public List<Employee> uploadTextFile(MultipartFile file) throws IOException;
+    public List<Employee> uploadExcelFile(MultipartFile file);
 }
