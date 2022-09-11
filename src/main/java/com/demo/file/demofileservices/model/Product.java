@@ -1,7 +1,8 @@
 package com.demo.file.demofileservices.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,16 +12,22 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Student {
+@Builder
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
 //    @JsonProperty(value="userId",required = true)
-    @JsonProperty(value="userId")
+    //@JsonProperty(value="userId")
     private Integer id;
 
     private String name;
-    private String email;
-    private String password;
+    private String description;
+    private String price;
+    private String file_path;
+    private String fileName;
+    private String updatedAt;
+    private String createdAt;
+
 
 }
