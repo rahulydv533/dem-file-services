@@ -16,7 +16,7 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
 //    @JsonProperty(value="userId",required = true)
-    @JsonProperty(value="userId")
+    @JsonProperty(value = "userId")
     private Integer id;
 
     private String name;
